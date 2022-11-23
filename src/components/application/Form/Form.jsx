@@ -1,59 +1,27 @@
-import React, { useState } from "react";
-import routePaths from "../../../routes/routePaths";
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "../../../App";
 import { getInitialFields } from "../../../utils/utils";
-import Button from "../../ui/Button/Button";
 import Input from "../../ui/Input/Input";
-import AuthLink from "../AuthLink/AuthLink";
+import { validateRequiredField } from "./helpers";
 import styles from "./styles.module.css";
 
-const Form = ({ fields, isSignInForm }) => {
+const Form = ({ fields }) => {
   const initialFields = getInitialFields(fields);
-  const buttonLabel = isSignInForm ? "Sign In" : "Sign Up";
-  const authLink = isSignInForm ? routePaths.signUp : routePaths.signIn;
 
-  const [enteredData, setEnteredData] = useState(initialFields);
-  const [errors, setErrors] = useState(initialFields);
+  const { errors, setErrors, enteredData, setEnteredData } = useContext(AuthContext);
 
-  const validateRequiredField = (event) => {
-    const { name, value } = event.target;
-
-    if (!value) {
-      setErrors({ ...errors, [name]: "This is a required field" });
-    }
-
-    if (value) {
-      setErrors({ ...errors, [name]: "" });
-    }
-  };
-
-  //   const validateEqualPasswords = (event) => {
-  //     const { name, value } = event.target;
-
-  //     if (value !== enteredData["password"]) {
-  //       return setErrors({ ...errors, [name]: "Passwords should match" });
-  //     }
-
-  //     if (value === enteredData["password"]) {
-  //       return setErrors({ ...errors, [name]: "" });
-  //     }
-  //   };
+  useEffect(() => {
+    setErrors(initialFields);
+    setEnteredData(initialFields);
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    const error = validateRequiredField(value);
 
-    validateRequiredField(event);
-
+    setErrors({ ...errors, [name]: error });
     setEnteredData({ ...enteredData, [name]: value });
   };
-
-  const handleClick = () => {
-    console.log(enteredData);
-  };
-
-  const hasErrors = Object.keys(errors).some((e) => errors[e]);
-  const isEachFieldFilled = Object.keys(enteredData).every((f) => enteredData[f]);
-
-  const isDisabledButton = hasErrors || !isEachFieldFilled;
 
   return (
     <div>
@@ -65,16 +33,11 @@ const Form = ({ fields, isSignInForm }) => {
             label={field.label}
             onChange={handleChange}
             placeholder={field.label}
-            error={errors[field.name]}
-            // onBlur={validateEqualPasswords}
+            error={errors?.[field.name]}
             value={enteredData?.[field.name]}
           />
         </div>
       ))}
-      <Button fullWidth disabled={isDisabledButton} label={buttonLabel} onClick={handleClick} />
-      <div className={styles.linkWrapper}>
-        <AuthLink signIn={isSignInForm} to={authLink} />
-      </div>
     </div>
   );
 };
