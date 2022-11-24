@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import eyeOff from "../../../images/eye-off.svg";
+import eyeOff from "../../static/icons/eye-off.svg";
 
 const types = { TEXT: "text", PASSWORD: "password" };
 

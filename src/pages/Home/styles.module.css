@@ -17,7 +17,7 @@
 }
 
 .title::after {
-    content: url("../../images/decor.svg");
+    content: url("./icons/decor.svg");
     position: absolute;
     bottom: -35%;
     right: -35%;
