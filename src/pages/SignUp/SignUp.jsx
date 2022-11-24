@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../App";
-import AuthLink from "../../components/application/AuthLink/AuthLink";
 import Form from "../../components/application/Form/Form";
+import { manageFormButton } from "../../components/application/Form/helpers";
 import Button from "../../components/ui/Button/Button";
 import routePaths from "../../routes/routePaths";
 import AuthService from "../../services/AuthService";
@@ -14,6 +14,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { errors, setErrors, enteredData } = useContext(AuthContext);
 
+  const isDisabled = manageFormButton(errors, enteredData);
   const payload = {
     password: enteredData["password"],
     username: enteredData["user-name"],
@@ -36,18 +37,16 @@ const SignUp = () => {
     }
   };
 
-  const hasErrors = Object.keys(errors).some((e) => errors[e]);
-  const isEachFieldFilled = Object.keys(enteredData).every((f) => enteredData[f]);
-
-  const isDisabled = hasErrors || !isEachFieldFilled;
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>Sign Up</div>
       <Form fields={SIGN_UP_FIELDS} />
       <Button fullWidth label="Sign Up" onClick={handleSubmit} disabled={isDisabled} />
       <div className={styles.linkWrapper}>
-        <AuthLink to={routePaths.signIn} />
+        <span>I have an account.</span>
+        <NavLink className={styles.link} to={routePaths.signIn}>
+          Go to Sign in
+        </NavLink>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
-import "./App.css";
+import React, { createContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./components/application/Layout/Layout";
+import Home from "./pages/Home/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
-import Home from "./pages/Home/Home";
+import Layout from "./components/application/Layout/Layout";
 import routePaths from "./routes/routePaths";
-import { createContext, useState } from "react";
+import "./App.css";
 
 export const AuthContext = createContext(null);
 

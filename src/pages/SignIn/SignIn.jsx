@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../App";
-import AuthLink from "../../components/application/AuthLink/AuthLink";
-import Form from "../../components/application/Form/Form";
-import Button from "../../components/ui/Button/Button";
 import routePaths from "../../routes/routePaths";
 import AuthService from "../../services/AuthService";
+import Button from "../../components/ui/Button/Button";
+import Form from "../../components/application/Form/Form";
+import { manageFormButton } from "../../components/application/Form/helpers";
 import { SIGN_IN_FIELDS } from "./constants";
 import styles from "./styles.module.css";
 
@@ -14,6 +14,7 @@ const SignIn = () => {
   const { setAuth } = useContext(AuthContext);
   const { errors, enteredData } = useContext(AuthContext);
 
+  const isDisabled = manageFormButton(errors, enteredData);
   const payload = { password: enteredData["password"], username: enteredData["user-name"] };
 
   const handleSubmit = async () => {
@@ -27,18 +28,16 @@ const SignIn = () => {
     }
   };
 
-  const hasErrors = Object.keys(errors).some((e) => errors[e]);
-  const isEachFieldFilled = Object.keys(enteredData).every((f) => enteredData[f]);
-
-  const isDisabledButton = hasErrors || !isEachFieldFilled;
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>Sign In</div>
       <Form fields={SIGN_IN_FIELDS} />
-      <Button fullWidth disabled={isDisabledButton} label="Sign In" onClick={handleSubmit} />
+      <Button fullWidth disabled={isDisabled} label="Sign In" onClick={handleSubmit} />
       <div className={styles.linkWrapper}>
-        <AuthLink signIn to={routePaths.signUp} />
+        <span>Don`t have account yet?</span>
+        <NavLink className={styles.link} to={routePaths.signUp}>
+          New Account
+        </NavLink>
       </div>
     </div>
   );

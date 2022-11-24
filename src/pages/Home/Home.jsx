@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button/Button";
 import styles from "./styles.module.css";
-import vector from "../../images/vector.svg";
+import vector from "./icons/vector.svg";
 import routePaths from "../../routes/routePaths";
 import { AuthContext } from "../../App";
 import AuthService from "../../services/AuthService";
